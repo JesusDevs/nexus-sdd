@@ -1,12 +1,20 @@
-# 🏭 Nexus-SDD — Fábrica de Software IA
+# 🏭 Nexus-SDD — La Fábrica de Software IA
 
-**Zero-Friction Spec-Driven Development Framework.**
+> *"No basta con comprar licencias de Cursor o Claude. Si la IA programa 'por vibra', la deuda técnica crece a la misma velocidad que el código."*
 
-Una CLI auto-instalable que transforma la IA de "chatbot avanzado" a Fábrica de Software Industrial.
+**Zero-Friction Spec-Driven Development Framework. Open Source. MIT.**
+
+Una CLI auto-instalable que transforma cualquier agente IA en una fábrica de software industrial con planificación, memoria, seguridad y skills por tecnología.
 
 ```bash
-nexus-sdd init && nexus-sdd spec "Mi primer feature"
+nexus-sdd init --suite fullstack && nexus-sdd spec "Mi primer feature"
 ```
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Skills: 14](https://img.shields.io/badge/Skills-14-brightgreen)]()
+[![Suites: 12](https://img.shields.io/badge/Suites-12-orange)]()
+[![MCP Tools: 4 vectoriales](https://img.shields.io/badge/MCP%20Vector-4%20tools-purple)]()
+
 
 ## El Problema
 
