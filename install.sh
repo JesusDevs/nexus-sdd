@@ -424,36 +424,90 @@ OPENSPEC
     fi
 }
 
-# ── Final Summary ─────────────────────────────────────────────────────
+# ── Interactive Wizard ────────────────────────────────────────────────
 print_summary() {
     header "Nexus-SDD Instalacion Completa"
 
     echo -e "${GREEN}${BOLD}  ✅ Nexus-SDD esta listo!${NC}\n"
-    echo -e "  ${BOLD}Comandos disponibles:${NC}"
-    echo -e "  ${CYAN}nexus-sdd init${NC}       — Re-inicializar configuracion"
-    echo -e "  ${CYAN}nexus-sdd spec${NC}       — Crear especificacion (OpenSpec)"
-    echo -e "  ${CYAN}nexus-sdd plan${NC}       — Generar plan de implementacion"
-    echo -e "  ${CYAN}nexus-sdd build${NC}      — Ejecutar fase de codigo"
-    echo -e "  ${CYAN}nexus-sdd test${NC}       — Ejecutar tests (BDD + Unit)"
-    echo -e "  ${CYAN}nexus-sdd security${NC}   — Escanear por fugas de secrets"
-    echo -e "  ${CYAN}nexus-sdd status${NC}     — Ver progreso de HDUs"
-    echo -e "  ${CYAN}nexus-sdd cron${NC}       — Programar tareas recurrentes"
-    echo -e "  ${CYAN}nexus-sdd skill${NC}      — Generar/instalar skills\n"
 
-    echo -e "  ${BOLD}Agentes configurados:${NC}"
-    echo -e "  - AGENTS.md (Claude Code, Cursor, Windsurf)"
-    echo -e "  - Engram MCP (19 tools) + Engram-Vec MCP (4 tools semanticas)"
-    echo -e "  - .nexus/profiles/ (perfiles de equipo)"
-    echo -e "  - .nexus/skills/ (skills instaladas)\n"
+    echo -e "  ${BOLD}¿Qué querés hacer ahora?${NC}\n"
 
-    echo -e "  ${BOLD}Proximo paso:${NC}"
-    echo -e "  ${GREEN}nexus-sdd spec \"Tu primer feature\"${NC}"
-    echo -e ""
-    echo -e "  ${BOLD}Tools vectoriales disponibles:${NC}"
-    echo -e "  - mem_search_semantic: buscar por significado"
-    echo -e "  - mem_similar: encontrar patrones repetidos"
-    echo -e "  - mem_transfer: transferir conocimiento entre proyectos"
-    echo -e "  - mem_detect_conflicts_semantic: detectar contradicciones\n"
+    echo -e "  ${CYAN}[1]${NC} ${BOLD}Iniciar un proyecto desde cero${NC}"
+    echo -e "      Elijo mi stack (web, mobile, backend, AI...) y Nexus-SDD"
+    echo -e "      configura todo: skills, perfiles, seguridad, OpenSpec."
+    echo -e "      ${GREEN}nexus-sdd init${NC}\n"
+
+    echo -e "  ${CYAN}[2]${NC} ${BOLD}Agregar Nexus-SDD a un proyecto existente${NC}"
+    echo -e "      Detecta el stack automáticamente e instala solo lo necesario."
+    echo -e "      ${GREEN}nexus-sdd init${NC} (en el directorio del proyecto)\n"
+
+    echo -e "  ${CYAN}[3]${NC} ${BOLD}Explorar las skills disponibles${NC}"
+    echo -e "      Ver el catálogo de 14 skills y 12 suites."
+    echo -e "      ${GREEN}nexus-sdd skill list${NC}\n"
+
+    echo -e "  ${CYAN}[4]${NC} ${BOLD}Probar la seguridad${NC}"
+    echo -e "      Escanear mi proyecto actual en busca de API keys y secrets."
+    echo -e "      ${GREEN}nexus-sdd security${NC}\n"
+
+    echo -e "  ${CYAN}[5]${NC} ${BOLD}Instalar skills específicas${NC}"
+    echo -e "      ${GREEN}nexus-sdd skill install <nombre>${NC}"
+    echo -e "      Ej: ${GREEN}nexus-sdd skill install langgraph-python${NC}\n"
+
+    echo -e "  ${BOLD}Suites disponibles para init:${NC}"
+    echo -e "  mobile mobile-android mobile-ios mobile-flutter"
+    echo -e "  web web-react web-vue"
+    echo -e "  backend backend-python backend-go"
+    echo -e "  fullstack ai-agent ai-agent-local"
+    echo -e "  testing devops\n"
+
+    echo -e "  ${BOLD}Ejemplos rápidos:${NC}"
+    echo -e "  ${GREEN}nexus-sdd init --suite mobile${NC}              # Android + iOS + Flutter"
+    echo -e "  ${GREEN}nexus-sdd init --suite backend-python${NC}     # FastAPI + Django"
+    echo -e "  ${GREEN}nexus-sdd init --suite ai-agent${NC}          # LangGraph + AWS + Bedrock"
+    echo -e "  ${GREEN}nexus-sdd init --suite fullstack${NC}         # React + FastAPI + Testing\n"
+
+    # Ask the user
+    echo -e "  ${BOLD}¿Qué suite querés probar?${NC} Escribí el número o nombre de suite (o Enter para salir):"
+    read -r USER_CHOICE
+
+    case "$USER_CHOICE" in
+        1|"mobile")
+            echo -e "\n${GREEN}Ejecutando: nexus-sdd init --suite mobile${NC}"
+            nexus-sdd init --suite mobile
+            ;;
+        2|"web")
+            echo -e "\n${GREEN}Ejecutando: nexus-sdd init --suite web${NC}"
+            nexus-sdd init --suite web
+            ;;
+        3|"backend")
+            echo -e "\n${GREEN}Ejecutando: nexus-sdd init --suite backend${NC}"
+            nexus-sdd init --suite backend
+            ;;
+        4|"ai-agent"|"ai")
+            echo -e "\n${GREEN}Ejecutando: nexus-sdd init --suite ai-agent${NC}"
+            nexus-sdd init --suite ai-agent
+            ;;
+        5|"fullstack")
+            echo -e "\n${GREEN}Ejecutando: nexus-sdd init --suite fullstack${NC}"
+            nexus-sdd init --suite fullstack
+            ;;
+        ""|"skip"|"no")
+            echo -e "\n${YELLOW}Ok. Cuando quieras: nexus-sdd init${NC}"
+            ;;
+        *)
+            # Try as suite name
+            echo -e "\n${GREEN}Ejecutando: nexus-sdd init --suite $USER_CHOICE${NC}"
+            nexus-sdd init --suite "$USER_CHOICE" 2>/dev/null || {
+                echo -e "\n${YELLOW}Suite '$USER_CHOICE' no reconocida.${NC}"
+                echo -e "${YELLOW}Ejecutá manualmente: nexus-sdd init --suite <nombre>${NC}"
+                echo -e "${YELLOW}Suites disponibles: mobile, web, backend, ai-agent, fullstack, testing${NC}"
+            }
+            ;;
+    esac
+
+    echo -e "\n${GREEN}${BOLD}Listo. Ahora el agente IA va a leer AGENTS.md + skills + perfiles.${NC}"
+    echo -e "${CYAN}Probá: nexus-sdd spec \"Tu primer feature\"${NC}"
+    echo -e "${CYAN}Estado: nexus-sdd status${NC}"
 }
 
 # ── Main ──────────────────────────────────────────────────────────────
