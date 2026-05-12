@@ -1,0 +1,37 @@
+# ═══════════════════════════════════════════════════════════════
+# Nexus-SDD Configuration
+# ═══════════════════════════════════════════════════════════════
+
+nexus_version: "0.1.0"
+
+# ── Core ──────────────────────────────────────────────────────
+openspec_enabled: true
+engram_enabled: true
+langfuse_enabled: false
+
+# ── Security ──────────────────────────────────────────────────
+security_scan_on_commit: true
+security_scan_patterns:
+  - api_keys
+  - hardcoded_secrets
+  - connection_strings
+  - private_keys
+
+# ── Testing ────────────────────────────────────────────────
+ralph_loop_max_retries: 3
+coverage_min_percent: 80
+bdd_enabled: true
+e2e_enabled: false
+
+# ── Agent Behavior ───────────────────────────────────────────
+token_report_frequency: 3
+max_tokens_per_phase: 200000
+supervisor_mode: strict  # strict | relaxed | autonomous
+
+# ── Hermes Cron ──────────────────────────────────────────────
+hermes_enabled: false
+hermes_default_schedule: "0 9 * * 1-5"  # weekdays at 9am
+
+# ── Skills ─────────────────────────────────────────────────
+skill_catalog_url: "https://github.com/nexus-sdd/skill-catalog"
+auto_update_skills: false
